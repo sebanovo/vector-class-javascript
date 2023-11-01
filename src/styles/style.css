@@ -1,0 +1,138 @@
+body {
+  background-color: #011220c0;
+  color: white;
+  box-sizing: border-box;
+  margin: 0;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande',
+    'Lucida Sans', Arial, sans-serif;
+}
+
+.menu {
+  position: relative;
+  display: inline-block;
+}
+
+.menu-button {
+  background-color: #333;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.menu-items {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  background-color: #333;
+}
+
+.menu-items li {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+  color: #fff;
+  text-decoration: none;
+  display: flex;
+  justify-content: flex-start;
+  cursor: pointer;
+  user-select: none;
+  padding: 5px;
+  font-size: 13px;
+  z-index: 999;
+}
+
+.menu-items li:hover {
+  background-color: white;
+  color: #333;
+}
+
+.menu-button:hover + .menu-items,
+.menu-items:hover {
+  display: block;
+}
+
+.input-text {
+  justify-content: center;
+  white-space: nowrap;
+  display: flex;
+}
+
+.input-data {
+  width: 100px;
+  outline: none;
+  border: 1px solid #353434;
+  border-radius: 2px;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  -ms-border-radius: 2px;
+  -o-border-radius: 2px;
+}
+
+.label-input {
+  margin: 0 10px;
+}
+.label-input input,
+.label-input label {
+  display: block;
+}
+
+.textbox {
+  align-items: center;
+}
+
+.textbox input {
+  width: 100%;
+  margin: 10px 0;
+  outline: none;
+  border: 1px solid #353434;
+  border-radius: 2px;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  -ms-border-radius: 2px;
+  -o-border-radius: 2px;
+}
+
+section {
+  width: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  align-items: center;
+  z-index: -1;
+}
+
+input {
+  height: 30px;
+  font-size: 26px;
+  caret-color: #3a3ac0;
+}
+
+#icon-github {
+  position: absolute;
+  display: inline-block;
+  margin: 5px 0;
+  margin-left: 10px;
+}
+
+/* Estilo para el efecto de hover */
+#icon-github:before {
+  content: ''; /* Agrega un pseudo-elemento */
+  position: absolute;
+  border-radius: 50%; /* Hace que el hover sea redondito */
+  width: 24px; /* Tamaño igual al icono */
+  height: 24px; /* Tamaño igual al icono */
+  background-color: rgba(143, 143, 143, 0.564); /* Color de fondo en hover */
+  opacity: 0; /* Inicialmente transparente */
+  pointer-events: none; /* Evita que el hover interfiera con el enlace */
+}
+
+#icon-github:hover:before {
+  opacity: 1; /* Hace visible el hover al pasar el mouse por encima */
+}
