@@ -750,26 +750,6 @@ export default class Vector {
         }
       }
     }
-
-    const capicuas = this.contarCapicuas()
-
-    const v1 = new Vector()
-    const v2 = new Vector()
-    for (let i = 0; i < capicuas; i++) {
-      v1.cargarElementoXElemento(this.v[i])
-    }
-
-    for (let i = capicuas; i < this.n; i++) {
-      v2.cargarElementoXElemento(this.v[i])
-    }
-
-    v1.ordenamientoBurbujaAscendente()
-    v2.ordenamientoBurbujaDescendente()
-
-    v1.concatenar(v2)
-
-    this.v = v1.v
-    this.n = v1.n
   }
 
   // Intercala primos y no primos de un segmento

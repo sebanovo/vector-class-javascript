@@ -71,5 +71,7 @@ export const botones = {
 
   textBox1: $('#textBox1'),
   textBox2: $('#textBox2'),
-  textBox3: $('#textBox3')
+  textBox3: $('#textBox3'),
+
+  botonReset: $('#fast-reset')
 }

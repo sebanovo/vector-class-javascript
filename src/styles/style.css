@@ -1,3 +1,11 @@
+* {
+  margin : 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+
+
 body {
   background-color: #011220c0;
   color: white;
@@ -135,4 +143,24 @@ input {
 
 #icon-github:hover:before {
   opacity: 1; /* Hace visible el hover al pasar el mouse por encima */
+}
+
+
+#fast-reset {
+  box-sizing: border-box;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  margin: 20px;
+  padding: 10px;
+  background-color: #3a3ac0;
+  outline: none;
+  border: 1px solid white;
+  color: white;
+}
+
+#fast-reset:hover {
+  border: 2px solid white;
+  background-color: aqua;
+  color: black;
 }

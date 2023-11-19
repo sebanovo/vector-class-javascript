@@ -405,3 +405,14 @@ Element.botonCargarElementoXElementoV2.addEventListener('click', () => {
 Element.botonDescargarV3.addEventListener('click', () => {
   textBox3.value = v3.descargar()
 })
+
+// Boton de reinicio rapido
+Element.botonReset.addEventListener('click', () => {
+  textBox1.value = ''
+  textBox2.value = ''
+  textBox3.value = ''
+
+  v1 = new Vector()
+  v2 = new Vector()
+  v3 = new Vector()
+})

@@ -18,7 +18,7 @@ export class NEnt {
     while (numero > 0) {
       digito = numero % 10
       resultado = resultado * 10 + digito
-      numero /= 10
+      numero = Math.floor(numero / 10)
     }
     this.valor = resultado
   }
@@ -28,9 +28,7 @@ export class NEnt {
   }
 
   verificarPar() {
-    const resto = this.valor % 2
-    const boleano = resto === 0
-    return boleano.toString()
+    return this.valor % 2 === 0
   }
 
   verificarPrimos() {
@@ -46,8 +44,8 @@ export class NEnt {
   }
 
   verificarCapicua() {
-    const capicua = this.valor
+    const copia = this.valor
     this.invertir()
-    return capicua === this.valor
+    return copia === this.valor
   }
 }
