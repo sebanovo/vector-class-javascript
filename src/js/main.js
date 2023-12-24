@@ -1,9 +1,8 @@
 import Swal from 'sweetalert2'
-import { confirDelete, messageSwal, promptSwal } from './utils.js'
-import Vector from '../class/Vector.js'
+import { Vector } from 'utilities-library'
 
-import * as All from '../components.js'
-const Element = All.botones
+import { confirDelete, messageSwal, promptSwal } from './alertSwal.js'
+import { Element } from './components.js'
 
 const { textBox1, textBox2, textBox3 } = Element
 
@@ -185,7 +184,6 @@ Element.botonDiferenciaDeConjuntosAB.addEventListener('click', () => {
 
 Element.botonDiferenciaDeConjuntosBA.addEventListener('click', () => {
   v3 = new Vector()
-  console.log('Hola')
   v3.diferenciaDeConjuntosBA(v1, v2)
   textBox3.value = v3.descargar()
 })

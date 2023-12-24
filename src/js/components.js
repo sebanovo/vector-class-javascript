@@ -1,6 +1,6 @@
 const $ = elemento => document.querySelector(elemento)
 
-export const botones = {
+export const Element = {
   botonCargarElementoXElemento: $('#CargarElementoXElemento'),
   botonCargarElementoXElementoV2: $('#CargarElementoXElementoV2'),
   botonCargarElementoXElementoV3: $('#CargarElementoXElementoV3'),
