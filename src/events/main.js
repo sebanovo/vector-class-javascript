@@ -1,6 +1,8 @@
+import Swal from 'sweetalert2'
+import { confirDelete, messageSwal, promptSwal } from './utils.js'
 import Vector from '../class/Vector.js'
-import * as All from '../components.js'
 
+import * as All from '../components.js'
 const Element = All.botones
 
 const { textBox1, textBox2, textBox3 } = Element
@@ -21,14 +23,34 @@ Element.botonCargar.addEventListener('click', () => {
   )
 })
 
-Element.botonCargarElementoXElemento.addEventListener('click', () => {
+Element.botonCargarElementoXElemento.addEventListener('click', async () => {
   v1 = new Vector()
-  const numeroDeElementos = parseInt(
-    prompt('Ingrese la cantidad de Elementos: ')
-  )
-  for (let i = 0; i < numeroDeElementos; i++) {
-    const elemento = parseInt(prompt(`Ingrese el Elemento ${i + 1} :`))
-    v1.cargarElementoXElemento(elemento)
+  let result = await promptSwal('Cantidad de elementos')
+  if (!result.isConfirmed) return
+  const nroElementos = parseInt(result.value)
+  let i = 0
+  let bool = true
+  while (i < nroElementos && bool) {
+    result = await Swal.fire({
+      title: `Elemento ${i + 1}`,
+      input: 'text',
+      inputAttributes: {
+        autocapitalize: 'off'
+      },
+      showCancelButton: true,
+      confirmButtonText: 'Aceptar',
+      cancelButtonText: 'Cancelar',
+      showLoaderOnConfirm: true,
+      allowOutsideClick: () => !Swal.isLoading()
+    })
+
+    if (result.isConfirmed) {
+      v1.cargarElementoXElemento(parseInt(result.value))
+    } else {
+      console.log('cancelado')
+      bool = false
+    }
+    i++
   }
 })
 
@@ -36,27 +58,31 @@ Element.botonDescargar.addEventListener('click', () => {
   textBox1.value = v1.descargar()
 })
 
-Element.botonCargarSerieAritmetica.addEventListener('click', () => {
-  const numeroDeElementos = parseInt(
-    prompt('Ingrese la cantidad de Elementos: ')
-  )
-  const valorInicial = parseInt(prompt('Valor Inicial: '))
-  const razon = parseInt(prompt('Valor de la razón: '))
-  v1.cargarSerieAritmetica(numeroDeElementos, valorInicial, razon)
+Element.botonCargarSerieAritmetica.addEventListener('click', async () => {
+  let result = await promptSwal('Numero De Elementos')
+  if (!result.isConfirmed) return
+  const nroElementos = parseInt(result.value)
+  result = await promptSwal('Primer Elemento')
+  if (!result.isConfirmed) return
+  const valorInicial = parseInt(result.value)
+  result = await promptSwal('Razón')
+  if (!result.isConfirmed) return
+  const razon = parseInt(result.value)
+  v1.cargarSerieAritmetica(nroElementos, valorInicial, razon)
 })
 
-Element.botonCargarSerieFibonacci.addEventListener('click', () => {
+Element.botonCargarSerieFibonacci.addEventListener('click', async () => {
   v1 = new Vector()
-  const numeroDeElementos = parseInt(
-    prompt('Ingrese la cantidad de Elementos: ')
-  )
-  v1.cargarSerieFibonacci(numeroDeElementos)
+  const result = await promptSwal('Cantidad de elementos')
+  if (!result.isConfirmed) return
+  v1.cargarSerieFibonacci(Number(result.value))
 })
 
-Element.botonSeleccionarPorPosicion.addEventListener('click', () => {
+Element.botonSeleccionarPorPosicion.addEventListener('click', async () => {
   v2 = new Vector()
-  const intervalo = parseInt(prompt('Introduzca el intervalo'))
-  v1.seleccionarPorPosicion(intervalo, v2)
+  const result = await promptSwal('Cantidad de elementos')
+  if (!result.isConfirmed) return
+  v1.seleccionarPorPosicion(Number(result.value))
 })
 
 Element.botonSeleccionarPrimos.addEventListener('click', () => {
@@ -77,16 +103,16 @@ Element.botonSeleccionarBuenos.addEventListener('click', () => {
 })
 
 Element.botonPromedio.addEventListener('click', () => {
-  alert(`El promedio es: ${v1.promedio()}`)
+  messageSwal(`El promedio es: ${v1.promedio()}`)
 })
 
 Element.botonMaximo.addEventListener('click', () => {
-  alert(`El maximo es: ${v1.maximo()}`)
+  messageSwal(`El maximo es: ${v1.maximo()}`)
 })
 
 Element.botonFrecuencia.addEventListener('click', () => {
   const valorMaximo = parseInt(document.getElementById('Final').value)
-  alert(`La frecuencia del maximo es: ${v1.frecuencia(valorMaximo)}`)
+  messageSwal(`La frecuencia del maximo es: ${v1.frecuencia(valorMaximo)}`)
 })
 
 Element.botonMaximoYFrecuencia.addEventListener('click', () => {
@@ -95,30 +121,38 @@ Element.botonMaximoYFrecuencia.addEventListener('click', () => {
     frecuencia: 0
   }
   v1.maximoYfrecuencia(MaximoYFrecuencia)
-  alert(
+  messageSwal(
     `Maximo: ${MaximoYFrecuencia.maximo} frecuencia: ${MaximoYFrecuencia.frecuencia}`
   )
 })
 
 Element.botonDesviacionMedia.addEventListener('click', () => {
   // Agrega la lógica para el evento de DesviacionMedia aquí
-  alert(`La desviacion media es: ${v1.desviacionMedia()}`)
+  messageSwal(`La desviacion media es: ${v1.desviacionMedia()}`)
 })
 
 Element.botonDesviacionEstandar.addEventListener('click', () => {
-  alert(`La desviacion estandar es: ${v1.desviacionEstandar()}`)
+  messageSwal(`La desviacion estandar es: ${v1.desviacionEstandar()}`)
 })
 
-Element.botonBusquedaBinaria.addEventListener('click', () => {
-  const valorBuscado = parseInt(prompt('Introduzca el valor a buscar: '))
+Element.botonBusquedaBinaria.addEventListener('click', async () => {
+  const result = await promptSwal('Introduzca el valor a buscar')
+  if (!result.isConfirmed) return
+  const valorBuscado = Number(result.value)
   const isEncontrado = v1.busquedaBinaria(valorBuscado)
-  if (isEncontrado) { alert(`El valor ${valorBuscado} SI se encuentra en el vector`) } else alert(`El valor ${valorBuscado} NO se encuentra en el vector`)
+  if (isEncontrado) {
+    messageSwal(`El valor ${valorBuscado} SI se encuentra en el vector`)
+  } else messageSwal(`El valor ${valorBuscado} NO se encuentra en el vector`)
 })
 
-Element.botonBusquedaSecuencial.addEventListener('click', () => {
-  const valorBuscado = parseInt(prompt('Introduzca el valor a buscar: '))
+Element.botonBusquedaSecuencial.addEventListener('click', async () => {
+  const result = await promptSwal('Introduzca el valor a buscar')
+  if (!result.isConfirmed) return
+  const valorBuscado = Number(result.value)
   const isEncontrado = v1.busquedaSecuencial(valorBuscado)
-  if (isEncontrado) { alert(`El valor ${valorBuscado} SI se encuentra en el vector`) } else alert(`El valor ${valorBuscado} NO se encuentra en el vector`)
+  if (isEncontrado) {
+    messageSwal(`El valor ${valorBuscado} SI se encuentra en el vector`)
+  } else messageSwal(`El valor ${valorBuscado} NO se encuentra en el vector`)
 })
 
 Element.botonOrdenamientoAscendente.addEventListener('click', () => {
@@ -169,14 +203,34 @@ Element.botonCargarV2.addEventListener('click', () => {
   )
 })
 
-Element.botonCargarElementoXElementoV2.addEventListener('click', () => {
+Element.botonCargarElementoXElementoV2.addEventListener('click', async () => {
   v2 = new Vector()
-  const numeroDeElementos = parseInt(
-    prompt('Ingrese la cantidad de Elementos: ')
-  )
-  for (let i = 0; i < numeroDeElementos; i++) {
-    const elemento = parseInt(prompt(`Ingrese el Elemento ${i + 1} :`))
-    v2.cargarElementoXElemento(elemento)
+  let result = await promptSwal('Cantidad de elementos')
+  if (!result.isConfirmed) return
+  const nroElementos = parseInt(result.value)
+  let i = 0
+  let bool = true
+  while (i < nroElementos && bool) {
+    result = await Swal.fire({
+      title: `Elemento ${i + 1}`,
+      input: 'text',
+      inputAttributes: {
+        autocapitalize: 'off'
+      },
+      showCancelButton: true,
+      confirmButtonText: 'Aceptar',
+      cancelButtonText: 'Cancelar',
+      showLoaderOnConfirm: true,
+      allowOutsideClick: () => !Swal.isLoading()
+    })
+
+    if (result.isConfirmed) {
+      v2.cargarElementoXElemento(parseInt(result.value))
+    } else {
+      console.log('cancelado')
+      bool = false
+    }
+    i++
   }
 })
 
@@ -217,17 +271,16 @@ Element.botonInvertir.addEventListener('click', () => {
 Element.botonContarElementosDeLasPosicionesSubmultiplos.addEventListener(
   'click',
   () => {
-    alert(`El número de submultiplos es: ${v1.contarSubmultiplos()}"`)
+    messageSwal(`El número de submultiplos es: ${v1.contarSubmultiplos()}"`)
   }
 )
 
 Element.botonBuscarElementoMayorDeLasPosicionesMultiplos.addEventListener(
   'click',
-  () => {
-    const indice = parseInt(
-      prompt('BUSCAR ELEMENTO MAYOR\nDeme un multiplo para las posiciones:')
-    )
-    alert(
+  async () => {
+    const result = await promptSwal('Deme un multiplo para las posiciones:')
+    const indice = Number(result.value)
+    messageSwal(
       `El elemento mayor del vector de las posiciones multiplos de ${indice} es: ${v1.buscarElementoMayor(
         indice
       )}`
@@ -235,25 +288,30 @@ Element.botonBuscarElementoMayorDeLasPosicionesMultiplos.addEventListener(
   }
 )
 
-Element.botonBuscarLaMediaDeLasPosicionesMultiplos.addEventListener('click', () => {
-  const indice = parseInt(
-    prompt('BUSCAR LA MEDIA\nDeme un multiplo para las posiciones:')
-  )
-  alert(
-    `La media del vector de las posiciones multiplos de ${indice} es: ${v1.buscarMedia(
-      indice
-    )}`
-  )
-})
-
-Element.botonVerificarSiTodosLosElementosSonIguales.addEventListener('click', () => {
-  const booleano = v1.verificarElementosIguales()
-  if (booleano) {
-    alert(`${booleano} - Elementos De V1 Iguales`)
-  } else {
-    alert(`${booleano} - Elementos De V1 No Iguales`)
+Element.botonBuscarLaMediaDeLasPosicionesMultiplos.addEventListener(
+  'click',
+  async () => {
+    const result = await promptSwal('deme un multiplo para las posiciones:')
+    const indice = Number(result.value)
+    messageSwal(
+      `La media del vector de las posiciones multiplos de ${indice} es: ${v1.buscarMedia(
+        indice
+      )}`
+    )
   }
-})
+)
+
+Element.botonVerificarSiTodosLosElementosSonIguales.addEventListener(
+  'click',
+  () => {
+    const booleano = v1.verificarElementosIguales()
+    if (booleano) {
+      messageSwal(`${booleano} - Elementos De V1 Iguales`)
+    } else {
+      messageSwal(`${booleano} - Elementos De V1 No Iguales`)
+    }
+  }
+)
 
 Element.botonVerificarSiElSegmentoEstaOrdenado.addEventListener('click', () => {
   const a = parseInt('Introduzca el primer limite:')
@@ -264,94 +322,113 @@ Element.botonVerificarSiElSegmentoEstaOrdenado.addEventListener('click', () => {
     a > v1.retornarDimension() ||
     b > v1.retornarDimension()
   ) {
-    alert('Indice fuera de los limites')
+    messageSwal('Indice fuera de los limites')
   } else {
-    alert(v1.verificarSegmentoOrdenado(a, b))
+    messageSwal(v1.verificarSegmentoOrdenado(a, b))
   }
 })
 
-Element.botonInsertarVector2En1RespectoAUnaPosicion.addEventListener('click', () => {
-  v3 = new Vector()
-  const posicion = parseInt(prompt('Introduce el indice'))
-  if (v1.retornarDimension() < 0 || v2.retornarDimension() < 0) {
-    alert('Tienes que cargar el Vector v1 y el v2')
-  } else if (posicion < 0 || posicion > v1.retornarDimension()) {
-    alert('Indice fuera de los limites')
-  } else {
-    v3.insertarVectorPorPosicion(v1, v2, posicion)
-    textBox3.value = v3.descargar()
-  }
-})
+Element.botonInsertarVector2En1RespectoAUnaPosicion.addEventListener(
+  'click',
+  async () => {
+    v3 = new Vector()
+    const result = await promptSwal('Introduce el indice')
+    const posicion = Number(result.value)
 
-Element.botonEliminarElementosDeUnSegmento.addEventListener('click', () => {
-  const a = parseInt(prompt('Introduzca el primer limte'))
-  const b = parseInt(prompt('Introduzca el segundo limte'))
-  if (
-    a < 0 ||
-    b < 0 ||
-    a > v1.retornarDimension() ||
-    b > v1.retornarDimension()
-  ) {
-    alert('Indice fuera de los limites')
-  } else {
-    v1.eliminarElementosDelVectorIndicandoLasPosiciones(a, b)
-    textBox2.value = v1.descargar()
+    if (v1.retornarDimension() < 0 || v2.retornarDimension() < 0) {
+      messageSwal('Tienes que cargar el Vector v1 y el v2')
+    } else if (posicion < 0 || posicion > v1.retornarDimension()) {
+      messageSwal('Indice fuera de los limites')
+    } else {
+      v3.insertarVectorPorPosicion(v1, v2, posicion)
+      textBox3.value = v3.descargar()
+    }
   }
-})
+)
+
+Element.botonEliminarElementosDeUnSegmento.addEventListener(
+  'click',
+  async () => {
+    const result1 = await promptSwal('Introduzca el primer limte')
+    const result2 = await promptSwal('Introduzca el segundo limite')
+    const a = Number(result1.value)
+    const b = Number(result2.value)
+    if (
+      a < 0 ||
+      b < 0 ||
+      a > v1.retornarDimension() ||
+      b > v1.retornarDimension()
+    ) {
+      messageSwal('Indice fuera de los limites')
+    } else {
+      v1.eliminarElementosDelVectorIndicandoLasPosiciones(a, b)
+      textBox2.value = v1.descargar()
+    }
+  }
+)
 
 Element.botonDuplicarElementos.addEventListener('click', () => {
   v1.duplicarElementos()
   textBox2.value = v1.descargar()
 })
 
-Element.botonOrdenarElementosDeUnSegmento.addEventListener('click', () => {
-  const a = parseInt(prompt('Introduzca el primer limte'))
-  const b = parseInt(prompt('Introduzca el segundo limte'))
-  if (
-    a < 0 ||
-    b < 0 ||
-    a > v1.retornarDimension() ||
-    b > v1.retornarDimension()
-  ) {
-    alert('Indice fuera de los limites')
-  } else {
-    v1.ordenarElementosDeUnSegmento(a, b)
-    textBox2.value = v1.descargar()
-  }
-})
-
-Element.botonEncontrarElementoMenosRepetidoDeUnSegmento.addEventListener(
+Element.botonOrdenarElementosDeUnSegmento.addEventListener(
   'click',
-  () => {
-    const a = parseInt(prompt('Introduzca el primer limte'))
-    const b = parseInt(prompt('Introduzca el segundo limte'))
+  async () => {
+    const result1 = await promptSwal('Introduzca el primer limte')
+    const result2 = await promptSwal('Introduzca el segundo limite')
+    const a = Number(result1.value)
+    const b = Number(result2.value)
     if (
       a < 0 ||
       b < 0 ||
       a > v1.retornarDimension() ||
       b > v1.retornarDimension()
     ) {
-      alert('Indice fuera de los limites')
+      messageSwal('Indice fuera de los limites')
+    } else {
+      v1.ordenarElementosDeUnSegmento(a, b)
+      textBox2.value = v1.descargar()
+    }
+  }
+)
+
+Element.botonEncontrarElementoMenosRepetidoDeUnSegmento.addEventListener(
+  'click',
+  async () => {
+    const result1 = await promptSwal('Introduzca el primer limte')
+    const result2 = await promptSwal('Introduzca el segundo limite')
+    const a = Number(result1.value)
+    const b = Number(result2.value)
+    if (
+      a < 0 ||
+      b < 0 ||
+      a > v1.retornarDimension() ||
+      b > v1.retornarDimension()
+    ) {
+      messageSwal('Indice fuera de los limites')
     } else {
       const elementoMenosRepetido =
         v1.encontrarElementoMenosRepetidoEntreUnSegmento(a, b)
-      alert(`El elemento menos repetido es: ${elementoMenosRepetido}`)
+      messageSwal(`El elemento menos repetido es: ${elementoMenosRepetido}`)
     }
   }
 )
 
 Element.botonEncontrarLaFrecuenciaDeDistribucionDeUnSegmento.addEventListener(
   'click',
-  () => {
-    const a = parseInt(prompt('Introduzca el primer limte'))
-    const b = parseInt(prompt('Introduzca el segundo limte'))
+  async () => {
+    const result1 = await promptSwal('Introduzca el primer limte')
+    const result2 = await promptSwal('Introduzca el segundo limite')
+    const a = Number(result1.value)
+    const b = Number(result2.value)
     if (
       a < 0 ||
       b < 0 ||
       a > v1.retornarDimension() ||
       b > v1.retornarDimension()
     ) {
-      alert('Indice fuera de los limites')
+      messageSwal('Indice fuera de los limites')
     } else {
       v2 = new Vector()
       v3 = new Vector()
@@ -362,16 +439,18 @@ Element.botonEncontrarLaFrecuenciaDeDistribucionDeUnSegmento.addEventListener(
   }
 )
 
-Element.botonIntercalarPrimosYNoPrimos.addEventListener('click', () => {
-  const a = parseInt(prompt('Introduzca el primer limte'))
-  const b = parseInt(prompt('Introduzca el segundo limte'))
+Element.botonIntercalarPrimosYNoPrimos.addEventListener('click', async () => {
+  const result1 = await promptSwal('Introduzca el primer limte')
+  const result2 = await promptSwal('Introduzca el segundo limite')
+  const a = Number(result1.value)
+  const b = Number(result2.value)
   if (
     a < 0 ||
     b < 0 ||
     a > v1.retornarDimension() ||
     b > v1.retornarDimension()
   ) {
-    alert('Indice fuera de los limites')
+    messageSwal('Indice fuera de los limites')
   } else {
     v1.intercalarPrimoYNoPrimo(a, b)
     textBox2.value = v1.descargar()
@@ -391,14 +470,34 @@ Element.botonCargarV3.addEventListener('click', () => {
   )
 })
 
-Element.botonCargarElementoXElementoV2.addEventListener('click', () => {
+Element.botonCargarElementoXElementoV3.addEventListener('click', async () => {
   v3 = new Vector()
-  const numeroDeElementos = parseInt(
-    prompt('Ingrese la cantidad de Elementos: ')
-  )
-  for (let i = 0; i < numeroDeElementos; i++) {
-    const elemento = parseInt(prompt(`Ingrese el Elemento ${i + 1} :`))
-    v3.cargarElementoXElemento(elemento)
+  let result = await promptSwal('Cantidad de elementos')
+  if (!result.isConfirmed) return
+  const nroElementos = parseInt(result.value)
+  let i = 0
+  let bool = true
+  while (i < nroElementos && bool) {
+    result = await Swal.fire({
+      title: `Elemento ${i + 1}`,
+      input: 'text',
+      inputAttributes: {
+        autocapitalize: 'off'
+      },
+      showCancelButton: true,
+      confirmButtonText: 'Aceptar',
+      cancelButtonText: 'Cancelar',
+      showLoaderOnConfirm: true,
+      allowOutsideClick: () => !Swal.isLoading()
+    })
+
+    if (result.isConfirmed) {
+      v3.cargarElementoXElemento(parseInt(result.value))
+    } else {
+      console.log('cancelado')
+      bool = false
+    }
+    i++
   }
 })
 
@@ -407,12 +506,21 @@ Element.botonDescargarV3.addEventListener('click', () => {
 })
 
 // Boton de reinicio rapido
-Element.botonReset.addEventListener('click', () => {
-  textBox1.value = ''
-  textBox2.value = ''
-  textBox3.value = ''
-
-  v1 = new Vector()
-  v2 = new Vector()
-  v3 = new Vector()
+Element.botonReset.addEventListener('click', async () => {
+  const result = await confirDelete()
+  if (result.isConfirmed) {
+    v1 = new Vector()
+    v2 = new Vector()
+    v3 = new Vector()
+    textBox1.value = ''
+    textBox2.value = ''
+    textBox3.value = ''
+    Swal.fire({
+      title: 'Reseteado!',
+      text: 'Los objetos fueron reseteados',
+      icon: 'success'
+    })
+  }
 })
+
+// checkar la busquedaBinaria

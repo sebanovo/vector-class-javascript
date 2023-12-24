@@ -17,11 +17,20 @@
       "./node_modules/standard/eslintrc.json"
     ],
     "rules": {
-      "space-before-function-paren": ["error",{"anonymous": "always","named": "never"}]
+      "space-before-function-paren": [
+        "error",
+        {
+          "anonymous": "always",
+          "named": "never"
+        }
+      ]
     },
     "env": {
       "browser": true,
       "node": true
     }
+  },
+  "dependencies": {
+    "sweetalert2": "^11.10.1"
   }
 }
