@@ -47,3 +47,11 @@ export function messageSwal(title) {
     }
   })
 }
+
+export function check({ title, text, icon }) {
+  Swal.fire({
+    title,
+    text,
+    icon
+  })
+}

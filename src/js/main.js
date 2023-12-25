@@ -1,7 +1,6 @@
-import Swal from 'sweetalert2'
 import { Vector } from 'utilities-library'
 
-import { confirDelete, messageSwal, promptSwal } from './alertSwal.js'
+import { check, confirDelete, messageSwal, promptSwal } from './alertSwal.js'
 import { Element } from './components.js'
 
 const { textBox1, textBox2, textBox3 } = Element
@@ -30,19 +29,7 @@ Element.botonCargarElementoXElemento.addEventListener('click', async () => {
   let i = 0
   let bool = true
   while (i < nroElementos && bool) {
-    result = await Swal.fire({
-      title: `Elemento ${i + 1}`,
-      input: 'text',
-      inputAttributes: {
-        autocapitalize: 'off'
-      },
-      showCancelButton: true,
-      confirmButtonText: 'Aceptar',
-      cancelButtonText: 'Cancelar',
-      showLoaderOnConfirm: true,
-      allowOutsideClick: () => !Swal.isLoading()
-    })
-
+    result = await promptSwal(`${i + 1}`)
     if (result.isConfirmed) {
       v1.cargarElementoXElemento(parseInt(result.value))
     } else {
@@ -209,19 +196,7 @@ Element.botonCargarElementoXElementoV2.addEventListener('click', async () => {
   let i = 0
   let bool = true
   while (i < nroElementos && bool) {
-    result = await Swal.fire({
-      title: `Elemento ${i + 1}`,
-      input: 'text',
-      inputAttributes: {
-        autocapitalize: 'off'
-      },
-      showCancelButton: true,
-      confirmButtonText: 'Aceptar',
-      cancelButtonText: 'Cancelar',
-      showLoaderOnConfirm: true,
-      allowOutsideClick: () => !Swal.isLoading()
-    })
-
+    result = await promptSwal(`${i + 1}`)
     if (result.isConfirmed) {
       v2.cargarElementoXElemento(parseInt(result.value))
     } else {
@@ -430,7 +405,7 @@ Element.botonEncontrarLaFrecuenciaDeDistribucionDeUnSegmento.addEventListener(
     } else {
       v2 = new Vector()
       v3 = new Vector()
-      v1.encontrarLaFrecuenciaDeDistribucionEntreUnSegmento(a, b, v2, v3)
+      v1.encontrarLaFrecuenciaDeDistribucioIntegerreUnSegmento(a, b, v2, v3)
       textBox2.value = v2.descargar()
       textBox3.value = v3.descargar()
     }
@@ -476,18 +451,7 @@ Element.botonCargarElementoXElementoV3.addEventListener('click', async () => {
   let i = 0
   let bool = true
   while (i < nroElementos && bool) {
-    result = await Swal.fire({
-      title: `Elemento ${i + 1}`,
-      input: 'text',
-      inputAttributes: {
-        autocapitalize: 'off'
-      },
-      showCancelButton: true,
-      confirmButtonText: 'Aceptar',
-      cancelButtonText: 'Cancelar',
-      showLoaderOnConfirm: true,
-      allowOutsideClick: () => !Swal.isLoading()
-    })
+    result = await promptSwal(`${i + 1}`)
 
     if (result.isConfirmed) {
       v3.cargarElementoXElemento(parseInt(result.value))
@@ -513,9 +477,9 @@ Element.botonReset.addEventListener('click', async () => {
     textBox1.value = ''
     textBox2.value = ''
     textBox3.value = ''
-    Swal.fire({
-      title: 'Reseteado!',
-      text: 'Los objetos fueron reseteados',
+    check({
+      title: 'Reiniciado',
+      text: 'Se han reiniciado los objetos y los textbox',
       icon: 'success'
     })
   }
