@@ -484,5 +484,3 @@ Element.botonReset.addEventListener('click', async () => {
     })
   }
 })
-
-// checkar la busquedaBinaria
