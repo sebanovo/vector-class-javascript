@@ -14,6 +14,8 @@ Element.botonCargar.addEventListener('click', () => {
   const valorInicial = document.getElementById('Inicio').value
   const valorFinal = document.getElementById('Final').value
 
+  v1 = new Vector()
+
   v1.cargar(
     parseInt(numeroDeElementos),
     parseInt(valorInicial),
@@ -22,12 +24,12 @@ Element.botonCargar.addEventListener('click', () => {
 })
 
 Element.botonCargarElementoXElemento.addEventListener('click', async () => {
-  v1 = new Vector()
   let result = await promptSwal('Cantidad de elementos')
   if (!result.isConfirmed) return
   const nroElementos = parseInt(result.value)
   let i = 0
   let bool = true
+  v1 = new Vector()
   while (i < nroElementos && bool) {
     result = await promptSwal(`${i + 1}`)
     if (result.isConfirmed) {
@@ -45,6 +47,8 @@ Element.botonDescargar.addEventListener('click', () => {
 })
 
 Element.botonCargarSerieAritmetica.addEventListener('click', async () => {
+  v1 = new Vector()
+
   let result = await promptSwal('Numero De Elementos')
   if (!result.isConfirmed) return
   const nroElementos = parseInt(result.value)
@@ -59,6 +63,7 @@ Element.botonCargarSerieAritmetica.addEventListener('click', async () => {
 
 Element.botonCargarSerieFibonacci.addEventListener('click', async () => {
   v1 = new Vector()
+
   const result = await promptSwal('Cantidad de elementos')
   if (!result.isConfirmed) return
   v1.cargarSerieFibonacci(Number(result.value))
@@ -175,67 +180,6 @@ Element.botonDiferenciaDeConjuntosBA.addEventListener('click', () => {
   textBox3.value = v3.descargar()
 })
 
-/** ****************** v2 **********************/
-Element.botonCargarV2.addEventListener('click', () => {
-  const numeroDeElementos = document.getElementById('N°Elementos').value
-  const valorInicial = document.getElementById('Inicio').value
-  const valorFinal = document.getElementById('Final').value
-
-  v2.cargar(
-    parseInt(numeroDeElementos),
-    parseInt(valorInicial),
-    parseInt(valorFinal)
-  )
-})
-
-Element.botonCargarElementoXElementoV2.addEventListener('click', async () => {
-  v2 = new Vector()
-  let result = await promptSwal('Cantidad de elementos')
-  if (!result.isConfirmed) return
-  const nroElementos = parseInt(result.value)
-  let i = 0
-  let bool = true
-  while (i < nroElementos && bool) {
-    result = await promptSwal(`${i + 1}`)
-    if (result.isConfirmed) {
-      v2.cargarElementoXElemento(parseInt(result.value))
-    } else {
-      console.log('cancelado')
-      bool = false
-    }
-    i++
-  }
-})
-
-Element.botonDescargarV2.addEventListener('click', () => {
-  textBox2.value = v2.descargar()
-})
-
-Element.botonSegmentarParYNoParV2.addEventListener('click', () => {
-  v2.segmentarParYNoPar()
-  textBox3.value = v2.descargar()
-})
-
-Element.botonSegmentarPrimosYNoPrimosV2.addEventListener('click', () => {
-  v2.segmentarPrimoYNoPrimo()
-  textBox3.value = v2.descargar()
-})
-
-Element.botonSegmentarCapicuasYNoCapicuasV2.addEventListener('click', () => {
-  v2.segmentarCapicuaYNoCapicua()
-  textBox3.value = v2.descargar()
-})
-
-Element.botonIntercalarParYNoParV2.addEventListener('click', () => {
-  v2.intercalarParYNoPar()
-  textBox3.value = v2.descargar()
-})
-
-Element.botonIntercalarPrimoYNoPrimoV2.addEventListener('click', () => {
-  v2.intercalarPrimoYNoPrimo()
-  textBox3.value = v2.descargar()
-})
-
 Element.botonInvertir.addEventListener('click', () => {
   v1.invertir()
   textBox2.value = v1.descargar()
@@ -297,7 +241,7 @@ Element.botonVerificarSiElSegmentoEstaOrdenado.addEventListener('click', () => {
   ) {
     messageSwal('Indice fuera de los limites')
   } else {
-    messageSwal(v1.verificarSegmentoOrdenado(a, b))
+    messageSwal(`${v1.verificarSegmentoOrdenado(a, b)}`)
   }
 })
 
@@ -381,9 +325,13 @@ Element.botonEncontrarElementoMenosRepetidoDeUnSegmento.addEventListener(
     ) {
       messageSwal('Indice fuera de los limites')
     } else {
-      const elementoMenosRepetido =
-        v1.encontrarElementoMenosRepetidoEntreUnSegmento(a, b)
-      messageSwal(`El elemento menos repetido es: ${elementoMenosRepetido}`)
+      v1.encontrarElementoMenosRepetidoEntreUnSegmento(a, b)
+      messageSwal(
+        `El elemento menos repetido es: ${v1.encontrarElementoMenosRepetidoEntreUnSegmento(
+          a,
+          b
+        )}`
+      )
     }
   }
 )
@@ -425,9 +373,72 @@ Element.botonIntercalarPrimosYNoPrimos.addEventListener('click', async () => {
   ) {
     messageSwal('Indice fuera de los limites')
   } else {
-    v1.intercalarPrimoYNoPrimo(a, b)
+    v1.intercalarPrimoYNoPrimoDeUnSegmento(a, b)
     textBox2.value = v1.descargar()
   }
+})
+/** ****************** v2 **********************/
+Element.botonCargarV2.addEventListener('click', () => {
+  const numeroDeElementos = document.getElementById('N°Elementos').value
+  const valorInicial = document.getElementById('Inicio').value
+  const valorFinal = document.getElementById('Final').value
+
+  v2 = new Vector()
+
+  v2.cargar(
+    parseInt(numeroDeElementos),
+    parseInt(valorInicial),
+    parseInt(valorFinal)
+  )
+})
+
+Element.botonCargarElementoXElementoV2.addEventListener('click', async () => {
+  let result = await promptSwal('Cantidad de elementos')
+  if (!result.isConfirmed) return
+  const nroElementos = parseInt(result.value)
+
+  let i = 0
+  let bool = true
+  v2 = new Vector()
+  while (i < nroElementos && bool) {
+    result = await promptSwal(`${i + 1}`)
+    if (result.isConfirmed) {
+      v2.cargarElementoXElemento(parseInt(result.value))
+    } else {
+      console.log('cancelado')
+      bool = false
+    }
+    i++
+  }
+})
+
+Element.botonDescargarV2.addEventListener('click', () => {
+  textBox2.value = v2.descargar()
+})
+
+Element.botonSegmentarParYNoParV2.addEventListener('click', () => {
+  v2.segmentarParYNoPar()
+  textBox3.value = v2.descargar()
+})
+
+Element.botonSegmentarPrimosYNoPrimosV2.addEventListener('click', () => {
+  v2.segmentarPrimoYNoPrimo()
+  textBox3.value = v2.descargar()
+})
+
+Element.botonSegmentarCapicuasYNoCapicuasV2.addEventListener('click', () => {
+  v2.segmentarCapicuaYNoCapicua()
+  textBox3.value = v2.descargar()
+})
+
+Element.botonIntercalarParYNoParV2.addEventListener('click', () => {
+  v2.intercalarParYNoPar()
+  textBox3.value = v2.descargar()
+})
+
+Element.botonIntercalarPrimoYNoPrimoV2.addEventListener('click', () => {
+  v2.intercalarPrimoYNoPrimo()
+  textBox3.value = v2.descargar()
 })
 
 /** ****************** v3 **********************/
@@ -435,6 +446,8 @@ Element.botonCargarV3.addEventListener('click', () => {
   const numeroDeElementos = document.getElementById('N°Elementos').value
   const valorInicial = document.getElementById('Inicio').value
   const valorFinal = document.getElementById('Final').value
+
+  v3 = new Vector()
 
   v3.cargar(
     parseInt(numeroDeElementos),
@@ -444,12 +457,12 @@ Element.botonCargarV3.addEventListener('click', () => {
 })
 
 Element.botonCargarElementoXElementoV3.addEventListener('click', async () => {
-  v3 = new Vector()
   let result = await promptSwal('Cantidad de elementos')
   if (!result.isConfirmed) return
   const nroElementos = parseInt(result.value)
   let i = 0
   let bool = true
+  v3 = new Vector()
   while (i < nroElementos && bool) {
     result = await promptSwal(`${i + 1}`)
 
