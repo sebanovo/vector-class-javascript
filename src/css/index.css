@@ -73,6 +73,8 @@ body {
 .input-data {
   width: 100px;
   outline: none;
+  display: flex;
+  justify-content: end;
   border: 1px solid #353434;
   border-radius: 2px;
   -webkit-border-radius: 2px;
@@ -161,4 +163,27 @@ input {
   border: 2px solid white;
   background-color: aqua;
   color: black;
+}
+
+.buttons-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+}
+
+#grabar-button, #leer-button {
+  background-color: black;
+  border: 2px solid #fff;
+  border-radius: 10px;
+  color: white;
+  outline: none;
+  padding: 10px;
+  cursor: pointer;
+}
+
+
+#grabar-button:hover, #leer-button:hover {
+  background-color: #473939;
 }

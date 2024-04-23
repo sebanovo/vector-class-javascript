@@ -1,7 +1,6 @@
 import { Vector } from 'utilities-library'
-
 import { check, confirDelete, messageSwal, promptSwal } from './alertSwal.js'
-import { Element } from './components.js'
+import { Element, grabarButton, leerButton } from './components.js'
 
 const { textBox1, textBox2, textBox3 } = Element
 
@@ -16,11 +15,7 @@ Element.botonCargar.addEventListener('click', () => {
 
   v1 = new Vector()
 
-  v1.cargar(
-    parseInt(numeroDeElementos),
-    parseInt(valorInicial),
-    parseInt(valorFinal)
-  )
+  v1.cargar(parseInt(numeroDeElementos), parseInt(valorInicial), parseInt(valorFinal))
 })
 
 Element.botonCargarElementoXElemento.addEventListener('click', async () => {
@@ -74,17 +69,6 @@ Element.botonSeleccionarPorPosicion.addEventListener('click', async () => {
   const result = await promptSwal('Cantidad de elementos')
   if (!result.isConfirmed) return
   v1.seleccionarPorPosicion(Number(result.value))
-})
-
-Element.botonSeleccionarPrimos.addEventListener('click', () => {
-  v2 = new Vector()
-  v1.seleccionarPrimos(v2)
-  textBox2.value = v2.descargar()
-})
-Element.botonSeleccionarNoPrimos.addEventListener('click', () => {
-  v3 = new Vector()
-  v1.seleccionarNoPrimos(v3)
-  textBox3.value = v3.descargar()
 })
 
 Element.botonSeleccionarBuenos.addEventListener('click', () => {
@@ -147,12 +131,12 @@ Element.botonBusquedaSecuencial.addEventListener('click', async () => {
 })
 
 Element.botonOrdenamientoAscendente.addEventListener('click', () => {
-  v1.ordenamientoPorIntercambioAscendente()
+  v1.ordenamientoBurbuja('asc')
   textBox2.value = v1.descargar()
 })
 
 Element.botonOrdenamientoDescendente.addEventListener('click', () => {
-  v1.ordenamientoPorIntercambioDescendente()
+  v1.ordenamientoBurbuja('desc')
   textBox2.value = v1.descargar()
 })
 
@@ -185,12 +169,9 @@ Element.botonInvertir.addEventListener('click', () => {
   textBox2.value = v1.descargar()
 })
 
-Element.botonContarElementosDeLasPosicionesSubmultiplos.addEventListener(
-  'click',
-  () => {
-    messageSwal(`El número de submultiplos es: ${v1.contarSubmultiplos()}"`)
-  }
-)
+Element.botonContarElementosDeLasPosicionesSubmultiplos.addEventListener('click', () => {
+  messageSwal(`El número de submultiplos es: ${v1.contarSubmultiplos()}"`)
+})
 
 Element.botonBuscarElementoMayorDeLasPosicionesMultiplos.addEventListener(
   'click',
@@ -205,43 +186,32 @@ Element.botonBuscarElementoMayorDeLasPosicionesMultiplos.addEventListener(
   }
 )
 
-Element.botonBuscarLaMediaDeLasPosicionesMultiplos.addEventListener(
-  'click',
-  async () => {
-    const result = await promptSwal('deme un multiplo para las posiciones:')
-    const indice = Number(result.value)
-    messageSwal(
-      `La media del vector de las posiciones multiplos de ${indice} es: ${v1.buscarMedia(
-        indice
-      )}`
-    )
-  }
-)
+Element.botonBuscarLaMediaDeLasPosicionesMultiplos.addEventListener('click', async () => {
+  const result = await promptSwal('deme un multiplo para las posiciones:')
+  const indice = Number(result.value)
+  messageSwal(
+    `La media del vector de las posiciones multiplos de ${indice} es: ${v1.buscarMedia(
+      indice
+    )}`
+  )
+})
 
-Element.botonVerificarSiTodosLosElementosSonIguales.addEventListener(
-  'click',
-  () => {
-    const booleano = v1.verificarElementosIguales()
-    if (booleano) {
-      messageSwal(`${booleano} - Elementos De V1 Iguales`)
-    } else {
-      messageSwal(`${booleano} - Elementos De V1 No Iguales`)
-    }
+Element.botonVerificarSiTodosLosElementosSonIguales.addEventListener('click', () => {
+  const booleano = v1.verificarElementosIguales()
+  if (booleano) {
+    messageSwal(`${booleano} - Elementos De V1 Iguales`)
+  } else {
+    messageSwal(`${booleano} - Elementos De V1 No Iguales`)
   }
-)
+})
 
 Element.botonVerificarSiElSegmentoEstaOrdenado.addEventListener('click', () => {
   const a = parseInt('Introduzca el primer limite:')
   const b = parseInt('Introduza el segundo limite')
-  if (
-    a < 0 ||
-    b < 0 ||
-    a > v1.retornarDimension() ||
-    b > v1.retornarDimension()
-  ) {
+  if (a < 0 || b < 0 || a > v1.retornarDimension() || b > v1.retornarDimension()) {
     messageSwal('Indice fuera de los limites')
   } else {
-    messageSwal(`${v1.verificarSegmentoOrdenado(a, b)}`)
+    messageSwal(`${v1.verificarOrdenado('asc', a, b)}`)
   }
 })
 
@@ -263,52 +233,36 @@ Element.botonInsertarVector2En1RespectoAUnaPosicion.addEventListener(
   }
 )
 
-Element.botonEliminarElementosDeUnSegmento.addEventListener(
-  'click',
-  async () => {
-    const result1 = await promptSwal('Introduzca el primer limte')
-    const result2 = await promptSwal('Introduzca el segundo limite')
-    const a = Number(result1.value)
-    const b = Number(result2.value)
-    if (
-      a < 0 ||
-      b < 0 ||
-      a > v1.retornarDimension() ||
-      b > v1.retornarDimension()
-    ) {
-      messageSwal('Indice fuera de los limites')
-    } else {
-      v1.eliminarElementosDelVectorIndicandoLasPosiciones(a, b)
-      textBox2.value = v1.descargar()
-    }
+Element.botonEliminarElementosDeUnSegmento.addEventListener('click', async () => {
+  const result1 = await promptSwal('Introduzca el primer limte')
+  const result2 = await promptSwal('Introduzca el segundo limite')
+  const a = Number(result1.value)
+  const b = Number(result2.value)
+  if (a < 0 || b < 0 || a > v1.retornarDimension() || b > v1.retornarDimension()) {
+    messageSwal('Indice fuera de los limites')
+  } else {
+    v1.eliminarElementosDelVectorIndicandoLasPosiciones(a, b)
+    textBox2.value = v1.descargar()
   }
-)
+})
 
 Element.botonDuplicarElementos.addEventListener('click', () => {
   v1.duplicarElementos()
   textBox2.value = v1.descargar()
 })
 
-Element.botonOrdenarElementosDeUnSegmento.addEventListener(
-  'click',
-  async () => {
-    const result1 = await promptSwal('Introduzca el primer limte')
-    const result2 = await promptSwal('Introduzca el segundo limite')
-    const a = Number(result1.value)
-    const b = Number(result2.value)
-    if (
-      a < 0 ||
-      b < 0 ||
-      a > v1.retornarDimension() ||
-      b > v1.retornarDimension()
-    ) {
-      messageSwal('Indice fuera de los limites')
-    } else {
-      v1.ordenarElementosDeUnSegmento(a, b)
-      textBox2.value = v1.descargar()
-    }
+Element.botonOrdenarElementosDeUnSegmento.addEventListener('click', async () => {
+  const result1 = await promptSwal('Introduzca el primer limte')
+  const result2 = await promptSwal('Introduzca el segundo limite')
+  const a = Number(result1.value)
+  const b = Number(result2.value)
+  if (a < 0 || b < 0 || a > v1.retornarDimension() || b > v1.retornarDimension()) {
+    messageSwal('Indice fuera de los limites')
+  } else {
+    v1.ordenamientoBurbuja('asc', a, b)
+    textBox2.value = v1.descargar()
   }
-)
+})
 
 Element.botonEncontrarElementoMenosRepetidoDeUnSegmento.addEventListener(
   'click',
@@ -317,12 +271,7 @@ Element.botonEncontrarElementoMenosRepetidoDeUnSegmento.addEventListener(
     const result2 = await promptSwal('Introduzca el segundo limite')
     const a = Number(result1.value)
     const b = Number(result2.value)
-    if (
-      a < 0 ||
-      b < 0 ||
-      a > v1.retornarDimension() ||
-      b > v1.retornarDimension()
-    ) {
+    if (a < 0 || b < 0 || a > v1.retornarDimension() || b > v1.retornarDimension()) {
       messageSwal('Indice fuera de los limites')
     } else {
       v1.encontrarElementoMenosRepetidoEntreUnSegmento(a, b)
@@ -343,17 +292,12 @@ Element.botonEncontrarLaFrecuenciaDeDistribucionDeUnSegmento.addEventListener(
     const result2 = await promptSwal('Introduzca el segundo limite')
     const a = Number(result1.value)
     const b = Number(result2.value)
-    if (
-      a < 0 ||
-      b < 0 ||
-      a > v1.retornarDimension() ||
-      b > v1.retornarDimension()
-    ) {
+    if (a < 0 || b < 0 || a > v1.retornarDimension() || b > v1.retornarDimension()) {
       messageSwal('Indice fuera de los limites')
     } else {
       v2 = new Vector()
       v3 = new Vector()
-      v1.encontrarLaFrecuenciaDeDistribucioIntegerreUnSegmento(a, b, v2, v3)
+      v1.encontrarLaFrecuenciaDeDistribucioNumeroreUnSegmento(a, b, v2, v3)
       textBox2.value = v2.descargar()
       textBox3.value = v3.descargar()
     }
@@ -365,15 +309,10 @@ Element.botonIntercalarPrimosYNoPrimos.addEventListener('click', async () => {
   const result2 = await promptSwal('Introduzca el segundo limite')
   const a = Number(result1.value)
   const b = Number(result2.value)
-  if (
-    a < 0 ||
-    b < 0 ||
-    a > v1.retornarDimension() ||
-    b > v1.retornarDimension()
-  ) {
+  if (a < 0 || b < 0 || a > v1.retornarDimension() || b > v1.retornarDimension()) {
     messageSwal('Indice fuera de los limites')
   } else {
-    v1.intercalarPrimoYNoPrimoDeUnSegmento(a, b)
+    v1.intercalar('esPrimo', a, b)
     textBox2.value = v1.descargar()
   }
 })
@@ -385,11 +324,7 @@ Element.botonCargarV2.addEventListener('click', () => {
 
   v2 = new Vector()
 
-  v2.cargar(
-    parseInt(numeroDeElementos),
-    parseInt(valorInicial),
-    parseInt(valorFinal)
-  )
+  v2.cargar(parseInt(numeroDeElementos), parseInt(valorInicial), parseInt(valorFinal))
 })
 
 Element.botonCargarElementoXElementoV2.addEventListener('click', async () => {
@@ -417,27 +352,27 @@ Element.botonDescargarV2.addEventListener('click', () => {
 })
 
 Element.botonSegmentarParYNoParV2.addEventListener('click', () => {
-  v2.segmentarParYNoPar()
+  v2.segmentar('esPar')
   textBox3.value = v2.descargar()
 })
 
 Element.botonSegmentarPrimosYNoPrimosV2.addEventListener('click', () => {
-  v2.segmentarPrimoYNoPrimo()
+  v2.segmentar('esPrimo')
   textBox3.value = v2.descargar()
 })
 
 Element.botonSegmentarCapicuasYNoCapicuasV2.addEventListener('click', () => {
-  v2.segmentarCapicuaYNoCapicua()
+  v2.segmentar('esCapicua')
   textBox3.value = v2.descargar()
 })
 
 Element.botonIntercalarParYNoParV2.addEventListener('click', () => {
-  v2.intercalarParYNoPar()
+  v2.intercalar('esPar')
   textBox3.value = v2.descargar()
 })
 
 Element.botonIntercalarPrimoYNoPrimoV2.addEventListener('click', () => {
-  v2.intercalarPrimoYNoPrimo()
+  v2.intercalar('esPrimo')
   textBox3.value = v2.descargar()
 })
 
@@ -449,11 +384,7 @@ Element.botonCargarV3.addEventListener('click', () => {
 
   v3 = new Vector()
 
-  v3.cargar(
-    parseInt(numeroDeElementos),
-    parseInt(valorInicial),
-    parseInt(valorFinal)
-  )
+  v3.cargar(parseInt(numeroDeElementos), parseInt(valorInicial), parseInt(valorFinal))
 })
 
 Element.botonCargarElementoXElementoV3.addEventListener('click', async () => {
@@ -496,4 +427,38 @@ Element.botonReset.addEventListener('click', async () => {
       icon: 'success'
     })
   }
+})
+
+grabarButton.addEventListener('click', e => {
+  const ancle = document.createElement('a')
+  const blob = new Blob([v1.vector.join('|')], { type: 'text/plain' })
+
+  ancle.download = 'vector'
+  ancle.href = URL.createObjectURL(blob)
+
+  document.body.appendChild(ancle)
+  ancle.click()
+  URL.revokeObjectURL(ancle.href)
+  document.body.removeChild(ancle)
+})
+
+leerButton.addEventListener('click', e => {
+  const input = document.createElement('input')
+  const reader = new FileReader()
+  input.type = 'file'
+  input.accept = '.txt'
+  // Establecemos el evento onload antes de llamar a readAsText
+  reader.onload = e => {
+    const numeros = e.target.result
+      .trim()
+      .split('|')
+      .map(numero => parseInt(numero.trim()))
+    v1.vector = numeros
+    v1.length = numeros.length
+  }
+
+  input.onchange = e => {
+    reader.readAsText(e.target.files[0])
+  }
+  input.click()
 })

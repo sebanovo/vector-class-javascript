@@ -75,3 +75,6 @@ export const Element = {
 
   botonReset: $('#fast-reset')
 }
+
+export const grabarButton = document.getElementById('grabar-button')
+export const leerButton = document.getElementById('leer-button')

@@ -15,6 +15,6 @@
   },
   "dependencies": {
     "sweetalert2": "^11.10.1",
-    "utilities-library": "^1.0.4"
+    "utilities-library": "^1.0.8"
   }
 }
