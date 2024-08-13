@@ -2,7 +2,7 @@
 
 Este proyecto representa un trabajo académico de la universidad en el que desarrollamos una clase Vector en JavaScript. Esta clase permite realizar cálculos matemáticos utilizando un array como base y está diseñada para llevar a cabo una variedad de operaciones matemáticas.
 
-Visita el proyecto [Clase-Vector](https://vector-class-javascript.vercel.app/)
+Visita el proyecto [Clase-Vector](https://clase-vector-vanilla-javascript.vercel.app/)
 
 <div align="center">
   <img src="https://i.ibb.co/ZHf6HTz/clase-vector.png" alt="vector-class-javascript">
