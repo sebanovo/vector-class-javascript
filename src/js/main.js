@@ -429,36 +429,54 @@ Element.botonReset.addEventListener('click', async () => {
   }
 })
 
-grabarButton.addEventListener('click', e => {
-  const ancle = document.createElement('a')
-  const blob = new Blob([v1.vector.join('|')], { type: 'text/plain' })
-
-  ancle.download = 'vector'
-  ancle.href = URL.createObjectURL(blob)
-
-  document.body.appendChild(ancle)
-  ancle.click()
-  URL.revokeObjectURL(ancle.href)
-  document.body.removeChild(ancle)
+grabarButton.addEventListener('click', async e => {
+  const pickerOpts = {
+    types: [
+      {
+        description: 'Vector',
+        accept: {
+          'text/plain': ['.txt']
+        }
+      }
+    ],
+    startIn: 'downloads'
+  }
+  const fileHandle = await window.showSaveFilePicker(pickerOpts)
+  const writable = await fileHandle.createWritable()
+  const blob = new Blob([v1.descargar()], { type: 'text/plain' })
+  writable.write(blob)
+  writable.close()
 })
 
-leerButton.addEventListener('click', e => {
-  const input = document.createElement('input')
+leerButton.addEventListener('click', async e => {
+  const pickerOpts = {
+    types: [
+      {
+        description: 'Vector',
+        accept: {
+          'text/plain': ['.txt']
+        }
+      }
+    ],
+    startIn: 'downloads',
+    excludeAcceptAllOption: true,
+    multiple: false
+  }
+
+  const [fileHandle] = await window.showOpenFilePicker(pickerOpts)
+  const blob = await fileHandle.getFile()
   const reader = new FileReader()
-  input.type = 'file'
-  input.accept = '.txt'
-  // Establecemos el evento onload antes de llamar a readAsText
+
   reader.onload = e => {
     const numeros = e.target.result
       .trim()
+      .slice(0, e.target.result.length - 1)
       .split('|')
-      .map(numero => parseInt(numero.trim()))
+      .map(numero => parseInt(numero))
+    if (isNaN(numeros[0])) return
     v1.vector = numeros
     v1.length = numeros.length
   }
 
-  input.onchange = e => {
-    reader.readAsText(e.target.files[0])
-  }
-  input.click()
+  reader.readAsText(blob)
 })
